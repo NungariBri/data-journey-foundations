@@ -1,0 +1,53 @@
+ CREATE TABLE students (
+    id INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+CREATE TABLE courses (
+    course_id INT PRIMARY KEY,
+    course_name VARCHAR(100)
+);
+INSERT INTO students VALUES
+(1,'Ali'),
+(2,'Brenda'),
+(3,'Chris');
+
+INSERT INTO courses VALUES
+(101,'Databases'),
+(102,'Python'),
+(103,'Machine Learning');
+CREATE TABLE enrollments (
+    enrollment_id INT PRIMARY KEY,
+    student_id INT,
+    course_id INT,
+    score INT,
+    FOREIGN KEY(student_id) REFERENCES students(id),
+   FOREIGN KEY(course_id) REFERENCES courses(course_id)
+);
+INSERT INTO enrollments VALUES
+(1,1,101,78),
+(2,1,102,85),
+(3,2,101,90),
+(4,2,103,88),
+(5,3,102,75),
+(6,3,103,82);
+
+SELECT
+s.name,
+c.course_name, 
+e.score
+FROM enrollments e 
+JOIN students s ON e.student_id=s.id
+JOIN courses c ON e.course_id=c.course_id;
+/*enrollments table summarizes and stores the relationship between students and courses, 
+including extra information like scores, fees, completion status, timestamps, etc.
+
+Instead of storing everything in one massive table, we:
+Keep students clean (only student info)
+Keep courses clean (only course info)
+Use enrollments to store:
+which student took which course
+how they performed
+any extra attributes of that relationship
+This avoids:duplication,inconsistency,messy updates
+*/
